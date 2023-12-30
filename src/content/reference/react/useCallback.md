@@ -4,7 +4,7 @@ title: useCallback
 
 <Intro>
 
-`useCallback` is a React Hook that lets you cache a function definition between re-renders.
+`useCallback` це React хук, який дозволяє кешувати визначення функції між повторними рендерами.
 
 ```js
 const cachedFn = useCallback(fn, dependencies)
@@ -16,11 +16,11 @@ const cachedFn = useCallback(fn, dependencies)
 
 ---
 
-## Reference {/*reference*/}
+## Довідка {/*reference*/}
 
 ### `useCallback(fn, dependencies)` {/*usecallback*/}
 
-Call `useCallback` at the top level of your component to cache a function definition between re-renders:
+Використовуйте `useCallback` на верхньому рівні вашого компоненту для кешування визначення функції між повторними рендерами:
 
 ```js {4,9}
 import { useCallback } from 'react';
@@ -34,34 +34,34 @@ export default function ProductPage({ productId, referrer, theme }) {
   }, [productId, referrer]);
 ```
 
-[See more examples below.](#usage)
+[Дивіться більше прикладів нижче.](#usage)
 
-#### Parameters {/*parameters*/}
+#### Параметри {/*parameters*/}
 
-* `fn`: The function value that you want to cache. It can take any arguments and return any values. React will return (not call!) your function back to you during the initial render. On next renders, React will give you the same function again if the `dependencies` have not changed since the last render. Otherwise, it will give you the function that you have passed during the current render, and store it in case it can be reused later. React will not call your function. The function is returned to you so you can decide when and whether to call it.
+* `fn`: Функція, значення якої ви хочете кешувати. Вона може приймати будь-які аргументи та повертати будь-які значення. React поверне (не викличе!) вам вашу функцію під час початкового рендеру. На наступних рендерах, React надасть вам ту ж саму функцію знову, якщо залежності не змінилися з часу останнього рендеру. В іншому випадку, він надасть вам функцію, яку ви передали під час поточного рендеру, і збереже її у випадку, якщо вона може бути повторно використана пізніше. React не викличе вашу функцію. Функція повертається вам, щоб ви могли вирішити, коли і чи варто її викликати.
 
-* `dependencies`: The list of all reactive values referenced inside of the `fn` code. Reactive values include props, state, and all the variables and functions declared directly inside your component body. If your linter is [configured for React](/learn/editor-setup#linting), it will verify that every reactive value is correctly specified as a dependency. The list of dependencies must have a constant number of items and be written inline like `[dep1, dep2, dep3]`. React will compare each dependency with its previous value using the [`Object.is`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is) comparison algorithm.
+* `dependencies`: Список усіх реактивних значень, на які посилається всередині коду `fn`. Реактивні значення включають пропси, стан та всі змінні і функції, оголошені безпосередньо у тілі вашого компонента. Якщо ваш лінтер [налаштований для React](/learn/editor-setup#linting), він перевірить, що кожне реактивне значення правильно вказане як залежність. Список залежностей має містити сталу кількість елементів та бути написаним в лінії, як `[dep1, dep2, dep3]`. React порівняє кожну залежність з її попереднім значенням, використовуючи алгоритм порівняння [`Object.is`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is).
 
-#### Returns {/*returns*/}
+#### Повертає {/*returns*/}
 
-On the initial render, `useCallback` returns the `fn` function you have passed.
+На першому рендері, `useCallback` повертає `fn` функцію, яку ви передали.
 
-During subsequent renders, it will either return an already stored `fn`  function from the last render (if the dependencies haven't changed), or return the `fn` function you have passed during this render.
+Під час наступних рендерів він або поверне вже збережену функцію `fn` з останнього рендеру (якщо залежності не змінилися), або поверне функцію `fn`, яку ви передали під час цього рендеру.
 
-#### Caveats {/*caveats*/}
+#### Застереження {/*caveats*/}
 
-* `useCallback` is a Hook, so you can only call it **at the top level of your component** or your own Hooks. You can't call it inside loops or conditions. If you need that, extract a new component and move the state into it.
-* React **will not throw away the cached function unless there is a specific reason to do that.** For example, in development, React throws away the cache when you edit the file of your component. Both in development and in production, React will throw away the cache if your component suspends during the initial mount. In the future, React may add more features that take advantage of throwing away the cache--for example, if React adds built-in support for virtualized lists in the future, it would make sense to throw away the cache for items that scroll out of the virtualized table viewport. This should match your expectations if you rely on `useCallback` as a performance optimization. Otherwise, a [state variable](/reference/react/useState#im-trying-to-set-state-to-a-function-but-it-gets-called-instead) or a [ref](/reference/react/useRef#avoiding-recreating-the-ref-contents) may be more appropriate.
+* `useCallback` це цук, тому викликати його можна лише **на верхньому рівні вашого** компонента або у ваших власних хуках. Ви не можете викликати його всередині циклів чи умов. Якщо це необхідно, створіть новий компонент і перенесіть стан до нього.
+* React **не позбудеться функції, якщо для цього немає специфічної причини.** Наприклад, під час розробки React позбувається кешу, коли ви редагуєте файл вашого компонента. Як у розробці, так і в продакшні, React позбудеться кешу, якщо ваш компонент затримується під час початкового монтажу. У майбутньому React може додати нові можливості, які використовують переваги позбування кешу — наприклад, якщо React додасть вбудовану підтримку віртуалізованих списків, було б логічно позбуватися кешу для елементів, які виходять за межі області перегляду віртуалізованої таблиці. Це повинно відповідати вашим очікуванням, якщо ви покладаєтеся на `useCallback` як на оптимізацію продуктивності. В іншому разі, [змінна стану](/reference/react/useState#im-trying-to-set-state-to-a-function-but-it-gets-called-instead) or a [реф](/reference/react/useRef#avoiding-recreating-the-ref-contents) можуть бути більш відповідними.
 
 ---
 
-## Usage {/*usage*/}
+## Використання {/*usage*/}
 
-### Skipping re-rendering of components {/*skipping-re-rendering-of-components*/}
+### Уникнення повторного рендеру компонентів {/*skipping-re-rendering-of-components*/}
 
-When you optimize rendering performance, you will sometimes need to cache the functions that you pass to child components. Let's first look at the syntax for how to do this, and then see in which cases it's useful.
+Коли ви оптимізуєте продуктивність рендеру, іноді вам потрібно буде кешувати функції, які ви передаєте дочірнім компонентам. Давайте спочатку розглянемо синтаксис того, як це зробити, а потім побачимо, у яких випадках це корисно.
 
-To cache a function between re-renders of your component, wrap its definition into the `useCallback` Hook:
+Щоб закешувати функцію між повторними рендерами вашого компонента, обгорніть її визначення у хук `useCallback`:
 
 ```js [[3, 4, "handleSubmit"], [2, 9, "[productId, referrer]"]]
 import { useCallback } from 'react';
@@ -76,20 +76,20 @@ function ProductPage({ productId, referrer, theme }) {
   // ...
 ```
 
-You need to pass two things to `useCallback`:
+Вам потрібно передати дві речі у `useCallback`:
 
-1. A function definition that you want to cache between re-renders.
-2. A <CodeStep step={2}>list of dependencies</CodeStep> including every value within your component that's used inside your function.
+1. Визначення функції, яке ви хочете закешувати між повторними рендерами.
+2. <CodeStep step={2}>Список залежностей</CodeStep>, який включає кожне значення всередині вашого компонента, що використовується у вашій функції.
 
-On the initial render, the <CodeStep step={3}>returned function</CodeStep> you'll get from `useCallback` will be the function you passed.
+На початковому рендері, <CodeStep step={3}>отримана функція</CodeStep> від `useCallback`, буде тією функцією, яку ви передали.
 
-On the following renders, React will compare the <CodeStep step={2}>dependencies</CodeStep> with the dependencies you passed during the previous render. If none of the dependencies have changed (compared with [`Object.is`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is)), `useCallback` will return the same function as before. Otherwise, `useCallback` will return the function you passed on *this* render.
+На наступних рендерах, React порівнюватиме <CodeStep step={2}>залежності</CodeStep> з тими, які ви передали під час попереднього рендеру. Якщо жодна з залежностей не змінилася (у порівнянні за допомогою [`Object.is`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is)), `useCallback` поверне ту саму функцію, що і раніше. В іншому випадку, `useCallback` поверне функцію, яку ви передали на *цьому* рендері.
 
-In other words, `useCallback` caches a function between re-renders until its dependencies change.
+Іншими словами, `useCallback` кешує функцію між повторними рендерами до тих пір, поки її залежності не зміняться.
 
-**Let's walk through an example to see when this is useful.**
+**Давайте розглянемо приклад, щоб побачити, коли це корисно.**
 
-Say you're passing a `handleSubmit` function down from the `ProductPage` to the `ShippingForm` component:
+Припустимо, ви передаєте функцію `handleSubmit` з компонента `ProductPage` до компонента `ShippingForm`:
 
 ```js {5}
 function ProductPage({ productId, referrer, theme }) {
@@ -124,7 +124,7 @@ function ProductPage({ productId, referrer, theme }) {
       orderDetails,
     });
   }
-  
+
   return (
     <div className={theme}>
       {/* ... so ShippingForm's props will never be the same, and it will re-render every time */}
@@ -216,7 +216,7 @@ function useCallback(fn, dependencies) {
 
 #### Should you add useCallback everywhere? {/*should-you-add-usecallback-everywhere*/}
 
-If your app is like this site, and most interactions are coarse (like replacing a page or an entire section), memoization is usually unnecessary. On the other hand, if your app is more like a drawing editor, and most interactions are granular (like moving shapes), then you might find memoization very helpful. 
+If your app is like this site, and most interactions are coarse (like replacing a page or an entire section), memoization is usually unnecessary. On the other hand, if your app is more like a drawing editor, and most interactions are granular (like moving shapes), then you might find memoization very helpful.
 
 Caching a function with `useCallback`  is only valuable in a few cases:
 
@@ -357,25 +357,25 @@ export default ShippingForm;
 
 ```css
 label {
-  display: block; margin-top: 10px;
+    display: block; margin-top: 10px;
 }
 
 input {
-  margin-left: 5px;
+    margin-left: 5px;
 }
 
 button[type="button"] {
-  margin: 5px;
+    margin: 5px;
 }
 
 .dark {
-  background-color: black;
-  color: white;
+    background-color: black;
+    color: white;
 }
 
 .light {
-  background-color: white;
-  color: black;
+    background-color: white;
+    color: black;
 }
 ```
 
@@ -496,25 +496,25 @@ export default ShippingForm;
 
 ```css
 label {
-  display: block; margin-top: 10px;
+    display: block; margin-top: 10px;
 }
 
 input {
-  margin-left: 5px;
+    margin-left: 5px;
 }
 
 button[type="button"] {
-  margin: 5px;
+    margin: 5px;
 }
 
 .dark {
-  background-color: black;
-  color: white;
+    background-color: black;
+    color: white;
 }
 
 .light {
-  background-color: white;
-  color: black;
+    background-color: white;
+    color: black;
 }
 ```
 
@@ -625,25 +625,25 @@ export default ShippingForm;
 
 ```css
 label {
-  display: block; margin-top: 10px;
+    display: block; margin-top: 10px;
 }
 
 input {
-  margin-left: 5px;
+    margin-left: 5px;
 }
 
 button[type="button"] {
-  margin: 5px;
+    margin: 5px;
 }
 
 .dark {
-  background-color: black;
-  color: white;
+    background-color: black;
+    color: white;
 }
 
 .light {
-  background-color: white;
-  color: black;
+    background-color: white;
+    color: black;
 }
 ```
 
@@ -674,7 +674,7 @@ function TodoList() {
     const newTodo = { id: nextId++, text };
     setTodos([...todos, newTodo]);
   }, [todos]);
-  // ...
+// ...
 ```
 
 You'll usually want memoized functions to have as few dependencies as possible. When you read some state only to calculate the next state, you can remove that dependency by passing an [updater function](/reference/react/useState#updating-state-based-on-the-previous-state) instead:
@@ -687,7 +687,7 @@ function TodoList() {
     const newTodo = { id: nextId++, text };
     setTodos(todos => [...todos, newTodo]);
   }, []); // ✅ No need for the todos dependency
-  // ...
+// ...
 ```
 
 Here, instead of making `todos` a dependency and reading it inside, you pass an instruction about *how* to update the state (`todos => [...todos, newTodo]`) to React. [Read more about updater functions.](/reference/react/useState#updating-state-based-on-the-previous-state)
@@ -713,7 +713,7 @@ function ChatRoom({ roomId }) {
     const options = createOptions();
     const connection = createConnection();
     connection.connect();
-    // ...
+// ...
 ```
 
 This creates a problem. [Every reactive value must be declared as a dependency of your Effect.](/learn/lifecycle-of-reactive-effects#react-verifies-that-you-specified-every-reactive-value-as-a-dependency) However, if you declare `createOptions` as a dependency, it will cause your Effect to constantly reconnect to the chat room:
@@ -721,12 +721,12 @@ This creates a problem. [Every reactive value must be declared as a dependency o
 
 ```js {6}
   useEffect(() => {
-    const options = createOptions();
-    const connection = createConnection();
-    connection.connect();
-    return () => connection.disconnect();
-  }, [createOptions]); // 🔴 Problem: This dependency changes on every render
-  // ...
+  const options = createOptions();
+  const connection = createConnection();
+  connection.connect();
+  return () => connection.disconnect();
+}, [createOptions]); // 🔴 Problem: This dependency changes on every render
+// ...
 ```
 
 To solve this, you can wrap the function you need to call from an Effect into `useCallback`:
@@ -748,7 +748,7 @@ function ChatRoom({ roomId }) {
     connection.connect();
     return () => connection.disconnect();
   }, [createOptions]); // ✅ Only changes when createOptions changes
-  // ...
+// ...
 ```
 
 This ensures that the `createOptions` function is the same between re-renders if the `roomId` is the same. **However, it's even better to remove the need for a function dependency.** Move your function *inside* the Effect:
@@ -770,7 +770,7 @@ function ChatRoom({ roomId }) {
     connection.connect();
     return () => connection.disconnect();
   }, [roomId]); // ✅ Only changes when roomId changes
-  // ...
+// ...
 ```
 
 Now your code is simpler and doesn't need `useCallback`. [Learn more about removing Effect dependencies.](/learn/removing-effect-dependencies#move-dynamic-objects-and-functions-inside-your-effect)
@@ -820,7 +820,7 @@ function ProductPage({ productId, referrer }) {
       orderDetails,
     });
   }); // 🔴 Returns a new function every time: no dependency array
-  // ...
+// ...
 ```
 
 This is the corrected version passing the dependency array as a second argument:
@@ -833,17 +833,17 @@ function ProductPage({ productId, referrer }) {
       orderDetails,
     });
   }, [productId, referrer]); // ✅ Does not return a new function unnecessarily
-  // ...
+// ...
 ```
 
 If this doesn't help, then the problem is that at least one of your dependencies is different from the previous render. You can debug this problem by manually logging your dependencies to the console:
 
 ```js {5}
   const handleSubmit = useCallback((orderDetails) => {
-    // ..
-  }, [productId, referrer]);
+  // ..
+}, [productId, referrer]);
 
-  console.log([productId, referrer]);
+console.log([productId, referrer]);
 ```
 
 You can then right-click on the arrays from different re-renders in the console and select "Store as a global variable" for both of them. Assuming the first one got saved as `temp1` and the second one got saved as `temp2`, you can then use the browser console to check whether each dependency in both arrays is the same:
