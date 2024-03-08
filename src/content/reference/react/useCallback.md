@@ -51,7 +51,7 @@ export default function ProductPage({ productId, referrer, theme }) {
 #### Застереження {/*caveats*/}
 
 * `useCallback` це цук, тому викликати його можна лише **на верхньому рівні вашого** компонента або у ваших власних хуках. Ви не можете викликати його всередині циклів чи умов. Якщо це необхідно, створіть новий компонент і перенесіть стан до нього.
-* React **не позбудеться функції, якщо для цього немає специфічної причини.** Наприклад, під час розробки React позбувається кешу, коли ви редагуєте файл вашого компонента. Як у розробці, так і в продакшні, React позбудеться кешу, якщо ваш компонент затримується під час початкового монтажу. У майбутньому React може додати нові можливості, які використовують переваги позбування кешу — наприклад, якщо React додасть вбудовану підтримку віртуалізованих списків, було б логічно позбуватися кешу для елементів, які виходять за межі області перегляду віртуалізованої таблиці. Це повинно відповідати вашим очікуванням, якщо ви покладаєтеся на `useCallback` як на оптимізацію продуктивності. В іншому разі, [змінна стану](/reference/react/useState#im-trying-to-set-state-to-a-function-but-it-gets-called-instead) or a [реф](/reference/react/useRef#avoiding-recreating-the-ref-contents) можуть бути більш відповідними.
+* React **не позбудеться функції, якщо для цього немає специфічної причини.** Наприклад, під час розробки React позбувається кешу, коли ви редагуєте файл вашого компонента. Як у розробці, так і в продакшні, React позбудеться кешу, якщо ваш компонент затримується під час початкового монтажу. У майбутньому React може додати нові можливості, які використовують переваги позбування кешу — наприклад, якщо React додасть вбудовану підтримку віртуалізованих списків, було б логічно позбуватися кешу для елементів, які виходять за межі області перегляду віртуалізованої таблиці. Це повинно відповідати вашим очікуванням, якщо ви покладаєтеся на `useCallback` як на оптимізацію продуктивності. В іншому разі, [змінна стану](/reference/react/useState#im-trying-to-set-state-to-a-function-but-it-gets-called-instead) або [реф](/reference/react/useRef#avoiding-recreating-the-ref-contents) можуть бути більш відповідними.
 
 ---
 
@@ -101,9 +101,9 @@ function ProductPage({ productId, referrer, theme }) {
   );
 ```
 
-You've noticed that toggling the `theme` prop freezes the app for a moment, but if you remove `<ShippingForm />` from your JSX, it feels fast. This tells you that it's worth trying to optimize the `ShippingForm` component.
+Ви помітили, що перемикання пропа `theme` на момент гальмує ваш додаток, але якщо видалити `<ShippingForm />` з вашого JSX, він здається швидким. Це говорить вам про те, що варто спробувати оптимізувати компонент `ShippingForm`.
 
-**By default, when a component re-renders, React re-renders all of its children recursively.** This is why, when `ProductPage` re-renders with a different `theme`, the `ShippingForm` component *also* re-renders. This is fine for components that don't require much calculation to re-render. But if you verified a re-render is slow, you can tell `ShippingForm` to skip re-rendering when its props are the same as on last render by wrapping it in [`memo`:](/reference/react/memo)
+**За замовчуванням, коли компонент ререндериться, React рекурсивно повторно рендеріть всі його дочірні компоненти.** Саме тому, коли `ProductPage` повторно рендериться з іншою `theme`, компонент `ShippingForm` також рендериться повторно. Це нормально для компонентів, яким не потрібно багато обрахунків для повторного рендеру. Але якщо ви перевірили, що повторний рендер повільний, ви можете сказати `ShippingForm` уникати повторного рендеру, коли його пропси такі ж, як і на останньому рендері, обгорнувши його у [`memo`:](/reference/react/memo)
 
 ```js {3,5}
 import { memo } from 'react';
@@ -113,7 +113,7 @@ const ShippingForm = memo(function ShippingForm({ onSubmit }) {
 });
 ```
 
-**With this change, `ShippingForm` will skip re-rendering if all of its props are the *same* as on the last render.** This is when caching a function becomes important! Let's say you defined `handleSubmit` without `useCallback`:
+**З цією зміною, ShippingForm уникне повторного рендеру, якщо всі його пропси *такі самі*, як і на останньому рендері.** Саме тут і стає важливим кешування функції! Припустимо, ви визначили `handleSubmit` без використання `useCallback`:
 
 ```js {2,3,8,12-13}
 function ProductPage({ productId, referrer, theme }) {
@@ -612,7 +612,7 @@ const ShippingForm = memo(function ShippingForm({ onSubmit }) {
         <input name="city" />
       </label>
       <label>
-        Postal code:
+        Postal code:`
         <input name="zipCode" />
       </label>
       <button type="submit">Submit</button>
